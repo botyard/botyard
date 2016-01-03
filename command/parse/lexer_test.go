@@ -4,30 +4,48 @@ import (
 	"testing"
 )
 
-func TestLexer(t *testing.T) {
-	var items []Item
-	src := "send <message>"
-	_, c := lex(src)
-	for i := range c {
-		items = append(items, i)
-		t.Logf("item:%v", i)
+func Test_LexerToken(t *testing.T) {
+	var tests = []struct {
+		s    string
+		item ItemType
+		lit  string
+	}{
+		{s: "image", item: ItemText, lit: "image"},
+		{s: "<image>", item: ItemArgument, lit: "image"},
 	}
 
-	if want, have := 2, len(items); want != have {
-		t.Errorf("want:%v have:%v", want, have)
+	for i, tt := range tests {
+		_, ch := lex(tt.s)
+		for item := range ch {
+			if tt.item != item.Type {
+				t.Errorf("%d. %q token mismatch: exp=%v got=%v <%q>", i, tt.s, tt.item, item.Type, tt.lit)
+			} else if tt.lit != item.Value {
+				t.Errorf("%d. %q literal mismatch: exp=%v got=%v", i, tt.s, tt.lit, item.Value)
+			}
+		}
 	}
 }
 
-func TestLexerMultiArguments(t *testing.T) {
-	var items []Item
-	src := "send message <message> to <user>"
-	_, c := lex(src)
-	for i := range c {
-		items = append(items, i)
-		t.Logf("item:%v", i)
+func Test_LexerCommand(t *testing.T) {
+	var tests = []struct {
+		s     string
+		items []Item
+	}{
+		{s: "send <message>", items: []Item{{ItemText, "send"}, {ItemArgument, "message"}}},
 	}
 
-	if want, have := 5, len(items); want != have {
-		t.Errorf("want:%v have:%v", want, have)
+	for i, tt := range tests {
+		items, err := Parse(tt.s)
+		if err != nil {
+			t.Error(err)
+			continue
+		}
+
+		//TODO: more tests
+		if len(tt.items) != len(items) {
+			t.Errorf("%d. %q items mismatch: exp=%v got=%v", i, tt.s, tt.items, items)
+		}
+		t.Logf("want:%v have:%v", tt.items, items)
 	}
+
 }
