@@ -1,6 +1,7 @@
-package command
+package http
 
 import (
+	"github.com/botyard/botyard/command/matcher"
 	"github.com/botyard/botyard/command/parse"
 	"github.com/botyard/botyard/message"
 
@@ -15,7 +16,7 @@ type HttpCommand struct {
 	items  []*parse.Item
 }
 
-func NewHttpCommand(method, url, cmd string) (*HttpCommand, error) {
+func New(method, url, cmd string) (*HttpCommand, error) {
 	c := &HttpCommand{
 		Method: method,
 		Url:    url,
@@ -27,11 +28,13 @@ func NewHttpCommand(method, url, cmd string) (*HttpCommand, error) {
 		return nil, err
 	}
 	c.items = items
-	return c
+	return c, nil
 }
 
 func (c *HttpCommand) Match(in string) (req interface{}, ok bool) {
-	return
+	m := matcher.New(c.Cmd, c.items)
+	args, ok := m.MatchAndReturnArguments()
+	return args, ok
 }
 
 func (c *HttpCommand) Endpoint() endpoint.Endpoint {
@@ -42,4 +45,5 @@ func (c *HttpCommand) Endpoint() endpoint.Endpoint {
 
 func (c *HttpCommand) Response(res interface{}) (msg *message.Message, err error) {
 
+	return nil, nil
 }
