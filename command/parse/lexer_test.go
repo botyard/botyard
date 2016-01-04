@@ -32,6 +32,7 @@ func Test_LexerCommand(t *testing.T) {
 		items []Item
 	}{
 		{s: "send <message>", items: []Item{{ItemText, "send"}, {ItemArgument, "message"}}},
+		{s: "send message", items: []Item{{ItemText, "send"}, {ItemText, "message"}}},
 	}
 
 	for i, tt := range tests {
@@ -41,11 +42,17 @@ func Test_LexerCommand(t *testing.T) {
 			continue
 		}
 
-		//TODO: more tests
 		if len(tt.items) != len(items) {
 			t.Errorf("%d. %q items mismatch: exp=%v got=%v", i, tt.s, tt.items, items)
 		}
-		t.Logf("want:%v have:%v", tt.items, items)
+
+		for idx, item := range items {
+			if tt.items[idx].Type != item.Type {
+				t.Errorf("%d. %q item type mismatch: want=%v have=%v", i, tt.s, tt.items[idx].Type, item.Type)
+			}
+		}
+
+		//		t.Logf("want:%v have:%v", tt.items, items)
 	}
 
 }

@@ -14,12 +14,11 @@ func Test_Matcher(t *testing.T) {
 		matched bool
 		args    []*command.Argument
 	}{
-		//		{src: "image me", cmd: "image me", matched: true, args: []*command.Argument{}},
+		{src: "image me", cmd: "image me", matched: true, args: []*command.Argument{}},
 		{src: "imge me", cmd: "image me", matched: false, args: []*command.Argument{}},
-		/*		{"send hello to you ", "send <message> to <user>", true,
-					[]*command.Argument{{"message", "hello"}, {"user", "you"}},
-				},
-		*/
+		{"send hello to you ", "send <message> to <user>", true,
+			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
+		},
 	}
 
 	for i, tt := range tests {
@@ -36,7 +35,7 @@ func Test_Matcher(t *testing.T) {
 		}
 
 		if len(args) != len(tt.args) {
-			t.Errorf("%v. args mismatched: want=%v have=%v", i, tt.args, args)
+			t.Errorf("%v. args mismatched: want=%v have=%v cmd=\"%v\" text=\"%v\"", i, tt.args, args, tt.cmd, tt.src)
 		}
 
 	}

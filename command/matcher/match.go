@@ -15,7 +15,13 @@ func MatchText(m *Matcher) MatchFn {
 			return MatchArgument
 		}
 		if strings.HasPrefix(m.input[m.pos:], item.Value) {
+			m.seek(len(item.Value))
 			m.emit(item)
+
+			if m.isWhitespace() {
+				m.ignore()
+			}
+
 			if !m.nextItem() {
 				break
 			}
@@ -42,6 +48,7 @@ func MatchArgument(m *Matcher) MatchFn {
 				if !m.nextItem() {
 					break
 				}
+				return MatchArgument
 			}
 		}
 
