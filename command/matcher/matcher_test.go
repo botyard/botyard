@@ -19,6 +19,9 @@ func Test_Matcher(t *testing.T) {
 		{"send hello to you ", "send <message> to <user>", true,
 			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
 		},
+		{"test  send hello to you ", "send <message> to <user>", true,
+			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
+		},
 	}
 
 	for i, tt := range tests {
