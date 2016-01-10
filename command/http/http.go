@@ -84,6 +84,7 @@ func (c *HttpCommand) Endpoint() endpoint.Endpoint {
 					q.Set(param, arg.Value)
 				}
 			}
+			u.RawQuery = q.Encode()
 		} else if c.Method == "POST" {
 			//TODO: How to represent POST form
 			//For now, There is same scheme for the command argument in the POST method
@@ -99,13 +100,15 @@ func (c *HttpCommand) Endpoint() endpoint.Endpoint {
 		if err != nil {
 			return nil, fmt.Errorf("Do: %v", err)
 		}
-		defer func() { _ = response.Body.Close() }()
+		//TODO:
+		//defer func() { _ = response.Body.Close() }()
 
 		return response, nil
 	}
 }
 
 func (c *HttpCommand) Response(res interface{}) (msg *message.Message, err error) {
+	//defer func() { _ = response.Body.Close() }()
 
 	return nil, nil
 }
