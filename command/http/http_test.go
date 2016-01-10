@@ -30,9 +30,10 @@ func Test_HTTPGet(t *testing.T) {
 	}
 
 	args := req.([]*command.Argument)
-	if have, want := len(args), 0; have != want {
-		t.Errorf("Match have: %v want: %v", have, want)
+	if have, want := len(args), 1; have != want {
+		t.Errorf("Match args have: %v want: %v", have, want)
 	}
+	t.Logf("args:%v", args)
 
 	ctx := context.Background()
 
@@ -54,7 +55,7 @@ func Test_HTTPGet(t *testing.T) {
 
 	//t.Logf("%v", resp)
 	t.Logf("body:%v", string(body))
-	if have, want := string(body), "Hello, client"; have != want {
+	if have, want := string(body), "Hello, client\n"; have != want {
 		t.Errorf("Response have: %v want: %v", have, want)
 	}
 

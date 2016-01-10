@@ -53,6 +53,9 @@ func MatchArgument(m *Matcher) MatchFn {
 		}
 
 		if m.next() == eof {
+			if m.pos > m.start {
+				m.emit(item)
+			}
 			break
 		}
 	}

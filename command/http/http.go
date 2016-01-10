@@ -41,7 +41,7 @@ func New(method, url, cmd string) (*HttpCommand, error) {
 }
 
 func (c *HttpCommand) Match(in string) (req interface{}, ok bool) {
-	m := matcher.New(c.Cmd, c.items)
+	m := matcher.New(in, c.items)
 	args, ok := m.MatchAndReturnArguments()
 	return args, ok
 }
@@ -73,7 +73,7 @@ func (c *HttpCommand) Endpoint() endpoint.Endpoint {
 				kv := make(map[string]string)
 				for key, val := range q {
 					if strings.HasPrefix(val[0], "<") && strings.HasSuffix(val[0], ">") {
-						kv[val[0]] = key
+						kv[val[0][1:len(val[0])-1]] = key
 					}
 				}
 				for _, arg := range args {
