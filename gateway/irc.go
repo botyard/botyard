@@ -2,6 +2,7 @@ package gateway
 
 import (
 	"crypto/tls"
+	"log"
 
 	"github.com/botyard/botyard/message"
 	irc "github.com/fluffle/goirc/client"
@@ -40,6 +41,13 @@ func NewIRCGateway() *IRCGateway {
 func (gw *IRCGateway) Open(c chan *message.Message) {
 	gw.msgChannel = c
 
+	log.Println("PRE connect")
+	if err := gw.ircConn.Connect(); err != nil {
+		log.Printf("Connection error: %s\n", err.Error())
+		return
+	}
+	log.Printf("Post connect")
+
 	gw.ircConn.HandleFunc("connected",
 		func(conn *irc.Conn, line *irc.Line) { conn.Join("#botyard") })
 
@@ -53,6 +61,7 @@ func (gw *IRCGateway) Open(c chan *message.Message) {
 			)
 			c <- m
 		})
+	log.Println("Open..")
 }
 
 func (gw *IRCGateway) SendMessage(m *message.Message) error {

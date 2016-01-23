@@ -12,6 +12,7 @@ import (
 
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -108,7 +109,7 @@ func (c *HttpCommand) Endpoint() endpoint.Endpoint {
 	}
 }
 
-func (c *HttpCommand) Response(res interface{}) (msg *message.Message, err error) {
+func (c *HttpCommand) Response(res interface{}) (*message.Message, error) {
 	response, ok := res.(*http.Response)
 	if !ok {
 		return nil, fmt.Errorf("res is not http.Response")
@@ -120,7 +121,9 @@ func (c *HttpCommand) Response(res interface{}) (msg *message.Message, err error
 		return nil, err
 	}
 
+	msg := &message.Message{}
 	msg.Body = string(body) //TODO
+	log.Println(msg.Body)
 
 	return msg, nil
 }

@@ -37,6 +37,7 @@ func (d *Dispatcher) dispatch() {
 		case m := <-d.msgChannel:
 			log.Println(m)
 			for _, c := range d.Commands {
+				log.Println("body:", m.Body)
 				req, ok := c.Match(m.Body)
 				if ok {
 					resp, err := c.Endpoint()(d.ctx, req)
@@ -49,13 +50,16 @@ func (d *Dispatcher) dispatch() {
 						log.Println(err)
 						continue
 					}
+					log.Println("reply:", reply)
 					reply.Address = m.Address //TODO:
-					log.Println(reply)
+
+					log.Println("reply.addr:", reply.Address)
 
 					gw, ok := d.Gateways[m.Address.GatewayID]
 					if !ok {
 						continue
 					}
+					log.Println("reply gw:", m.Address.GatewayID)
 					gw.SendMessage(reply)
 
 				}
