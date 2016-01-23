@@ -11,6 +11,7 @@ import (
 	"golang.org/x/net/context/ctxhttp"
 
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -108,7 +109,18 @@ func (c *HttpCommand) Endpoint() endpoint.Endpoint {
 }
 
 func (c *HttpCommand) Response(res interface{}) (msg *message.Message, err error) {
-	//defer func() { _ = response.Body.Close() }()
+	response, ok := res.(*http.Response)
+	if !ok {
+		return nil, fmt.Errorf("res is not http.Response")
+	}
+	defer func() { _ = response.Body.Close() }()
 
-	return nil, nil
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	msg.Body = string(body) //TODO
+
+	return msg, nil
 }
