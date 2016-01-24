@@ -4,17 +4,10 @@ import (
 	"github.com/botyard/botyard/message"
 )
 
-//var Gateways = map[string]Gateway{}
-
 type Gateway interface {
 	ID() string
-	Open(chan *message.Message)
+	Name() string
+	Open(chan *message.Message) error
 	SendMessage(*message.Message) error
-	//Close()
+	//Close() //TODO:
 }
-
-/*
-func Add(id string, gw Gateway) {
-	Gateways[id] = gw
-}
-*/

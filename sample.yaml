@@ -1,0 +1,13 @@
+name: boty
+commands:
+    - name: "hello"
+      command: "hello <world>"
+      url: "http://example.com/hello?world=<world>"
+      type: http
+      method: GET
+irc:
+    - name: irc1
+      server: irc.org 
+slack:
+    - name: slack1
+      token: TOKEN

@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"github.com/botyard/botyard/config"
 	"github.com/botyard/botyard/message"
 
 	"github.com/bobbytables/slacker"
@@ -9,18 +10,18 @@ import (
 	"log"
 )
 
-const TOKEN = "xoxb-19244391940-ZrKpxFdwo1F0a4P8uQpO5U2e"
-
 type SlackGateway struct {
 	id     string
+	cfg    config.SlackGateway
 	client *slacker.APIClient
 	broker *slacker.RTMBroker
 }
 
-func NewSlackGateway() *SlackGateway {
-	client := slacker.NewAPIClient(TOKEN, "")
+func NewSlackGateway(cfg config.SlackGateway) *SlackGateway {
+	client := slacker.NewAPIClient(cfg.Token, "")
 	gw := &SlackGateway{
 		id:     "slack",
+		cfg:    cfg,
 		client: client,
 	}
 	return gw
@@ -30,11 +31,14 @@ func (gw *SlackGateway) ID() string {
 	return gw.id
 }
 
-func (gw *SlackGateway) Open(c chan *message.Message) {
+func (gw *SlackGateway) Name() string {
+	return gw.cfg.Name
+}
+
+func (gw *SlackGateway) Open(c chan *message.Message) error {
 	rtmStart, err := gw.client.RTMStart()
 	if err != nil {
-		log.Println(err)
-		return
+		return err
 	}
 	gw.broker = slacker.NewRTMBroker(rtmStart)
 	gw.broker.Connect()
@@ -62,6 +66,8 @@ func (gw *SlackGateway) Open(c chan *message.Message) {
 
 		}
 	}()
+
+	return nil
 
 }
 

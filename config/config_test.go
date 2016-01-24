@@ -16,10 +16,11 @@ commands:
 	  type: http
 	  method: GET
 irc:
-	server: irc.org	
+	- name: irc.org
+	  server: irc.org
 slack:
-	token: TOKEN
-
+	- name: codeport
+      token: TOKEN
 `
 
 	b := bytes.Replace([]byte(data), []byte("\t"), []byte("    "), -1)

@@ -4,7 +4,9 @@ import (
 	"crypto/tls"
 	"log"
 
+	"github.com/botyard/botyard/config"
 	"github.com/botyard/botyard/message"
+
 	irc "github.com/fluffle/goirc/client"
 	"github.com/satori/go.uuid"
 )
@@ -15,53 +17,66 @@ const (
 
 type IRCGateway struct {
 	id         string
+	cfg        config.IRCGateway
 	msgChannel chan *message.Message
 	channels   []string //#botyard...
 	ircConn    *irc.Conn
 }
 
-func NewIRCGateway() *IRCGateway {
+func NewIRCGateway(cfg config.IRCGateway) *IRCGateway {
+
 	//irc
-	cfg := irc.NewConfig("boty")
-	cfg.SSL = true
-	cfg.SSLConfig = &tls.Config{
-		InsecureSkipVerify: true,
+	irccfg := irc.NewConfig(cfg.Name)
+	if cfg.UseSSL == true {
+		irccfg.SSL = true
+		irccfg.SSLConfig = &tls.Config{
+			InsecureSkipVerify: true,
+		}
 	}
-	cfg.Server = "irc.ozinger.org:16667" //TODO
-	cfg.NewNick = func(n string) string { return n + "^" }
-	c := irc.Client(cfg)
+	irccfg.Server = cfg.Server
+	irccfg.NewNick = func(n string) string { return n + "^" } //TODO:
+
+	c := irc.Client(irccfg)
 
 	gw := &IRCGateway{
 		id:      uuid.NewV4().String(),
+		cfg:     cfg,
 		ircConn: c,
 	}
 	return gw
 }
 
-func (gw *IRCGateway) Open(c chan *message.Message) {
+func (gw *IRCGateway) Open(c chan *message.Message) error {
 	gw.msgChannel = c
 
-	log.Println("PRE connect")
 	if err := gw.ircConn.Connect(); err != nil {
 		log.Printf("Connection error: %s\n", err.Error())
-		return
+		return err
 	}
-	log.Printf("Post connect")
 
 	gw.ircConn.HandleFunc("connected",
-		func(conn *irc.Conn, line *irc.Line) { conn.Join("#botyard") })
+		func(conn *irc.Conn, line *irc.Line) {
+			for _, c := range gw.cfg.Channels {
+				conn.Join(c)
+				log.Printf("Joining %v\n", c)
+			}
+		})
 
 	gw.ircConn.HandleFunc(irc.PRIVMSG,
 		func(conn *irc.Conn, line *irc.Line) {
 			text := line.Text()
+			channel := line.Target()
 			m := message.FromGateway(
 				gw.id,
-				"#botyard",
+				channel,
 				text,
 			)
 			c <- m
 		})
+
 	log.Println("Open..")
+
+	return nil
 }
 
 func (gw *IRCGateway) SendMessage(m *message.Message) error {
@@ -73,11 +88,6 @@ func (gw *IRCGateway) ID() string {
 	return gw.id
 }
 
-//TODO
-
-/*
-func init() {
-	gw := NewIRCGateway()
-	Add(gw.ID, gw)
+func (gw *IRCGateway) Name() string {
+	return gw.cfg.Name
 }
-*/
