@@ -1,0 +1,59 @@
+{
+	"ImportPath": "github.com/botyard/botyard",
+	"GoVersion": "go1.5.2",
+	"Deps": [
+		{
+			"ImportPath": "github.com/bobbytables/slacker",
+			"Rev": "0a05912e400e9aacca7296855ba9fb874cdf34c5"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-139-g142e6cd",
+			"Rev": "142e6cd241a4dfbf7f07a018f1f8225180018da4"
+		},
+		{
+			"ImportPath": "github.com/fluffle/goirc/client",
+			"Rev": "5cf08f7e9c65b43b612a06b02e7c5c818ea0a84c"
+		},
+		{
+			"ImportPath": "github.com/fluffle/goirc/logging",
+			"Rev": "5cf08f7e9c65b43b612a06b02e7c5c818ea0a84c"
+		},
+		{
+			"ImportPath": "github.com/fluffle/goirc/state",
+			"Rev": "5cf08f7e9c65b43b612a06b02e7c5c818ea0a84c"
+		},
+		{
+			"ImportPath": "github.com/go-kit/kit/endpoint",
+			"Rev": "ab86790bc70e830b2c3ef5df49ddc77d89e6fc7a"
+		},
+		{
+			"ImportPath": "github.com/golang/mock/gomock",
+			"Rev": "58a501f87109a45c68afc54e6b1368398678d386"
+		},
+		{
+			"ImportPath": "github.com/gorilla/websocket",
+			"Rev": "5434f8b69b7f4f4ef0120e04c046cd6ce54ef0dd"
+		},
+		{
+			"ImportPath": "github.com/satori/go.uuid",
+			"Rev": "d41af8bb6a7704f00bc3b7cba9355ae6a5a80048"
+		},
+		{
+			"ImportPath": "github.com/sdming/gosnow",
+			"Rev": "3a05c415e886bd8d06522975d2c3458eafe93f04"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "db8e4de5b2d6653f66aea53094624468caad15d2"
+		},
+		{
+			"ImportPath": "golang.org/x/net/proxy",
+			"Rev": "db8e4de5b2d6653f66aea53094624468caad15d2"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
+		}
+	]
+}
