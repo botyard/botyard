@@ -74,7 +74,7 @@ func (l *Loader) loadCommands() error {
 func (l *Loader) loadGateways() error {
 	for _, irccfg := range l.Config.IRCGateway {
 		//TODO: valudate config
-		irc := gateway.NewIRCGateway(irccfg)
+		irc := gateway.NewIRCGateway(irccfg, l.Config.Botname)
 		l.Gateways[irc.ID()] = irc
 		log.Printf("Load irc gateway id:%v name:%v", irc.ID(), irccfg.Name)
 	}

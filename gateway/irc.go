@@ -23,10 +23,10 @@ type IRCGateway struct {
 	ircConn    *irc.Conn
 }
 
-func NewIRCGateway(cfg config.IRCGateway) *IRCGateway {
+func NewIRCGateway(cfg config.IRCGateway, botname string) *IRCGateway {
 
 	//irc
-	irccfg := irc.NewConfig(cfg.Name)
+	irccfg := irc.NewConfig(botname)
 	if cfg.UseSSL == true {
 		irccfg.SSL = true
 		irccfg.SSLConfig = &tls.Config{
@@ -74,7 +74,7 @@ func (gw *IRCGateway) Open(c chan *message.Message) error {
 			c <- m
 		})
 
-	log.Println("Open..")
+	log.Println("Open IRC.")
 
 	return nil
 }
