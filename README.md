@@ -1,6 +1,8 @@
-# Botyard
+# Botyard 
 
-## configuration
+[![Circle CI](https://circleci.com/gh/botyard/botyard.svg?style=svg)](https://circleci.com/gh/botyard/botyard)
+
+## Configuration
 
 ```
 name: boty
