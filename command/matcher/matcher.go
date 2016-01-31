@@ -17,6 +17,7 @@ type Matcher struct {
 	pos       int
 	width     int
 	itemIdx   int
+	matchIdx  int
 	matched   bool
 	stateFn   MatchFn
 	arguments []*command.Argument
@@ -35,7 +36,7 @@ func (m *Matcher) MatchAndReturnArguments() ([]*command.Argument, bool) {
 		m.stateFn = m.stateFn(m)
 	}
 
-	if m.itemIdx+1 == len(m.items) {
+	if m.matchIdx == len(m.items) {
 		m.matched = true
 	}
 	return m.arguments, m.matched
@@ -53,11 +54,10 @@ func (m *Matcher) next() rune {
 }
 
 func (m *Matcher) nextItem() bool {
+	defer func() { m.itemIdx++ }()
 	if m.itemIdx >= len(m.items)-1 {
 		return false
 	}
-
-	m.itemIdx++
 	return true
 }
 
@@ -75,6 +75,7 @@ func (m *Matcher) emit(item *parse.Item) {
 		m.arguments = append(m.arguments, &command.Argument{item.Value, m.input[m.start:m.pos]})
 	}
 	m.start = m.pos
+	m.matchIdx++
 }
 
 func (m *Matcher) isWhitespace() bool {

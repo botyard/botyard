@@ -16,6 +16,8 @@ func Test_Matcher(t *testing.T) {
 	}{
 		{src: "image me", cmd: "image me", matched: true, args: []*command.Argument{}},
 		{src: "imge me", cmd: "image me", matched: false, args: []*command.Argument{}},
+		{src: "image ", cmd: "image me", matched: false, args: []*command.Argument{}},
+		{src: "image", cmd: "image me", matched: false, args: []*command.Argument{}},
 		{"send hello to you ", "send <message> to <user>", true,
 			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
 		},
@@ -29,12 +31,12 @@ func Test_Matcher(t *testing.T) {
 		if err != nil {
 			t.Errorf("%q. err:%v", i, err)
 		}
-		t.Log(items[0], items[1])
+		//t.Log(items[0], items[1])
 
 		m := New(tt.src, items)
 		args, ok := m.MatchAndReturnArguments()
 		if ok != tt.matched {
-			t.Errorf("%v. mismatched: want=%v have=%v", i, tt.matched, ok)
+			t.Errorf("%v. src='%v',cmd='%v' mismatched: want=%v have=%v", i, tt.src, tt.cmd, tt.matched, ok)
 		}
 
 		if len(args) != len(tt.args) {

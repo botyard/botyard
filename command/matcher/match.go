@@ -30,7 +30,6 @@ func MatchText(m *Matcher) MatchFn {
 		if m.next() == eof {
 			break
 		}
-
 	}
 	return nil
 }
