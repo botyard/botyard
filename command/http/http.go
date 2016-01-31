@@ -44,8 +44,9 @@ func New(method, url, cmd string) (*HttpCommand, error) {
 
 func (c *HttpCommand) Match(in string) (req interface{}, ok bool) {
 	m := matcher.New(in, c.items)
-	args, ok := m.MatchAndReturnArguments()
-	return args, ok
+	ok, _ = m.Match()
+	req = m.Arguments()
+	return
 }
 
 func (c *HttpCommand) Endpoint() endpoint.Endpoint {

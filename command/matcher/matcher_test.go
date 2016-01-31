@@ -24,6 +24,12 @@ func Test_Matcher(t *testing.T) {
 		{"test  send hello to you ", "send <message> to <user>", true,
 			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
 		},
+		{"send message hello to you ", "send message <message> to <user>", true,
+			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
+		},
+		{"send hello world ", "send <message1> <message2>", true,
+			[]*command.Argument{{"message1", "hello"}, {"message2", "world"}},
+		},
 	}
 
 	for i, tt := range tests {
@@ -34,7 +40,9 @@ func Test_Matcher(t *testing.T) {
 		//t.Log(items[0], items[1])
 
 		m := New(tt.src, items)
-		args, ok := m.MatchAndReturnArguments()
+		ok, _ := m.Match()
+		args := m.Arguments()
+
 		if ok != tt.matched {
 			t.Errorf("%v. src='%v',cmd='%v' mismatched: want=%v have=%v", i, tt.src, tt.cmd, tt.matched, ok)
 		}
