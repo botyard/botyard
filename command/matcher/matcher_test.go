@@ -18,6 +18,7 @@ func Test_Matcher(t *testing.T) {
 		{src: "imge me", cmd: "image me", matched: false, args: []*command.Argument{}},
 		{src: "image ", cmd: "image me", matched: false, args: []*command.Argument{}},
 		{src: "image", cmd: "image me", matched: false, args: []*command.Argument{}},
+		{src: "imageme", cmd: "image me", matched: false, args: []*command.Argument{}},
 		{"send hello to you ", "send <message> to <user>", true,
 			[]*command.Argument{{"message", "hello"}, {"user", "you"}},
 		},

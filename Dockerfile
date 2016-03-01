@@ -1,4 +1,4 @@
-FROM golang:1.5.3
+FROM golang:1.6
 
 WORKDIR /go/src/github.com/botyard/botyard
 ADD . /go/src/github.com/botyard/botyard

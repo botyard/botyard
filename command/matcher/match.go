@@ -18,8 +18,8 @@ func MatchText(m *Matcher) MatchFn {
 			m.seek(len(item.Value))
 			m.emit(item)
 
-			if m.isWhitespace() {
-				m.ignore()
+			if !m.isWhitespace() {
+				break
 			}
 
 			if !m.nextItem() {
