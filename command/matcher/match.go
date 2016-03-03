@@ -48,6 +48,8 @@ func MatchArgument(m *Matcher) MatchFn {
 					break
 				}
 				return MatchArgument
+			} else {
+				m.ignore()
 			}
 		}
 
