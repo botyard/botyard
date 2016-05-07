@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/message"
 
 	"github.com/go-kit/kit/endpoint"
 )

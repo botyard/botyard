@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/message"
 )
 
 type Gateway interface {

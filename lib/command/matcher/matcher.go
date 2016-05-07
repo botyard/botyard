@@ -1,8 +1,8 @@
 package matcher
 
 import (
-	"github.com/botyard/botyard/command"
-	"github.com/botyard/botyard/command/parse"
+	"github.com/botyard/botyard/lib/command"
+	"github.com/botyard/botyard/lib/command/parse"
 
 	"unicode"
 	"unicode/utf8"

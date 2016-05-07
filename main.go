@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/botyard/botyard/message"
-	"github.com/botyard/botyard/sync"
+	"github.com/botyard/botyard/lib"
+	"github.com/botyard/botyard/lib/message"
+	"github.com/botyard/botyard/lib/sync"
 
 	"github.com/codegangsta/cli"
 	"golang.org/x/net/context"
@@ -57,7 +58,7 @@ func DaemonAction(c *cli.Context) {
 		msgChannel = make(chan *message.Message)
 	}
 
-	loader, err := NewLoader(yamlContent)
+	loader, err := lib.NewLoader(yamlContent)
 	if err != nil {
 		log.Fatalf("Loader err:%v", err)
 		return
@@ -68,17 +69,17 @@ func DaemonAction(c *cli.Context) {
 		return
 	}
 
-	var dispatchers []*Dispatcher
+	var dispatchers []*lib.Dispatcher
 	{
 		for i := 0; i < c.Int("num_dispatcher"); i++ {
-			dispatcher := NewDispatcher(ctx, msgChannel, loader)
+			dispatcher := lib.NewDispatcher(ctx, msgChannel, loader)
 			dispatchers = append(dispatchers, dispatcher)
 			sync.WaitGroup.Add(1)
 		}
 	}
 
 	go func() {
-		http.HandleFunc("/hello", helloHandler)
+		http.HandleFunc("/hello", lib.HelloHandler)
 		http.ListenAndServe(":9001", nil)
 	}()
 	sync.WaitGroup.Wait()

@@ -1,11 +1,11 @@
-package main
+package lib
 
 import (
-	"github.com/botyard/botyard/command"
-	httpcmd "github.com/botyard/botyard/command/http"
-	"github.com/botyard/botyard/config"
-	"github.com/botyard/botyard/gateway"
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/command"
+	httpcmd "github.com/botyard/botyard/lib/command/http"
+	"github.com/botyard/botyard/lib/config"
+	"github.com/botyard/botyard/lib/gateway"
+	"github.com/botyard/botyard/lib/message"
 
 	"gopkg.in/yaml.v2"
 

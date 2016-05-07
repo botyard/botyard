@@ -1,7 +1,7 @@
-package main
+package lib
 
 import (
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/message"
 
 	"golang.org/x/net/context"
 

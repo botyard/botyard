@@ -1,8 +1,8 @@
 package gateway
 
 import (
-	"github.com/botyard/botyard/config"
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/config"
+	"github.com/botyard/botyard/lib/message"
 
 	"github.com/bobbytables/slacker"
 

@@ -4,8 +4,8 @@ import (
 	"crypto/tls"
 	"log"
 
-	"github.com/botyard/botyard/config"
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/config"
+	"github.com/botyard/botyard/lib/message"
 
 	irc "github.com/fluffle/goirc/client"
 	"github.com/satori/go.uuid"

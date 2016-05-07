@@ -1,10 +1,10 @@
 package http
 
 import (
-	"github.com/botyard/botyard/command"
-	"github.com/botyard/botyard/command/matcher"
-	"github.com/botyard/botyard/command/parse"
-	"github.com/botyard/botyard/message"
+	"github.com/botyard/botyard/lib/command"
+	"github.com/botyard/botyard/lib/command/matcher"
+	"github.com/botyard/botyard/lib/command/parse"
+	"github.com/botyard/botyard/lib/message"
 
 	"github.com/go-kit/kit/endpoint"
 	"golang.org/x/net/context"
