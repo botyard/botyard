@@ -26,7 +26,21 @@
 		},
 		{
 			"ImportPath": "github.com/go-kit/kit/endpoint",
-			"Rev": "ab86790bc70e830b2c3ef5df49ddc77d89e6fc7a"
+			"Rev": "29235a436a43b71c8b57671f9d6b630f0a6b4533"
+		},
+		{
+			"ImportPath": "github.com/go-kit/kit/log",
+			"Rev": "29235a436a43b71c8b57671f9d6b630f0a6b4533"
+		},
+		{
+			"ImportPath": "github.com/go-logfmt/logfmt",
+			"Comment": "v0.1.0",
+			"Rev": "08ab82a63ef462ac643ec79e659f023891f588f5"
+		},
+		{
+			"ImportPath": "github.com/go-stack/stack",
+			"Comment": "v1.5.0",
+			"Rev": "ac4c579c437a23e1a15814c867ccb82122fb383b"
 		},
 		{
 			"ImportPath": "github.com/golang/mock/gomock",
@@ -35,6 +49,10 @@
 		{
 			"ImportPath": "github.com/gorilla/websocket",
 			"Rev": "5434f8b69b7f4f4ef0120e04c046cd6ce54ef0dd"
+		},
+		{
+			"ImportPath": "github.com/kr/logfmt",
+			"Rev": "b84e30acd515aadc4b783ad4ff83aff3299bdfe0"
 		},
 		{
 			"ImportPath": "github.com/satori/go.uuid",
