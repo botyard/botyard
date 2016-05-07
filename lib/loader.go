@@ -5,25 +5,28 @@ import (
 	httpcmd "github.com/botyard/botyard/lib/command/http"
 	"github.com/botyard/botyard/lib/config"
 	"github.com/botyard/botyard/lib/gateway"
+	"github.com/botyard/botyard/lib/log"
 	"github.com/botyard/botyard/lib/message"
 
+	kitlog "github.com/go-kit/kit/log"
 	"gopkg.in/yaml.v2"
 
 	"bytes"
 	"fmt"
-	"log"
 )
 
 type Loader struct {
 	Config   config.Config
 	Commands map[string]command.Command
 	Gateways map[string]gateway.Gateway
+	logger   kitlog.Logger
 }
 
 func NewLoader(data []byte) (*Loader, error) {
 	l := &Loader{
 		Commands: make(map[string]command.Command),
 		Gateways: make(map[string]gateway.Gateway),
+		logger:   kitlog.NewContext(log.Logger).With("m", "Loader"),
 	}
 
 	cfg, err := l.loadConfigFile(data)
@@ -76,13 +79,13 @@ func (l *Loader) loadGateways() error {
 		//TODO: valudate config
 		irc := gateway.NewIRCGateway(irccfg, l.Config.Botname)
 		l.Gateways[irc.ID()] = irc
-		log.Printf("Load irc gateway id:%v name:%v", irc.ID(), irccfg.Name)
+		l.logger.Log("load", "irc", "id", irc.ID(), "name", irccfg.Name)
 	}
 	for _, slackcfg := range l.Config.SlackGateway {
 		//TODO: valudate config
 		slack := gateway.NewSlackGateway(slackcfg)
 		l.Gateways[slack.ID()] = slack
-		log.Printf("Load slack gateway id:%v name:%v", slack.ID(), slackcfg.Name)
+		l.logger.Log("load", "slack", "id", slack.ID(), "name", slackcfg.Name)
 	}
 	return nil
 }

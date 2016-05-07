@@ -1,17 +1,18 @@
 package lib
 
 import (
+	"github.com/botyard/botyard/lib/log"
 	"github.com/botyard/botyard/lib/message"
 
+	kitlog "github.com/go-kit/kit/log"
 	"golang.org/x/net/context"
-
-	"log"
 )
 
 type Dispatcher struct {
 	ctx        context.Context
 	loader     *Loader
 	msgChannel chan *message.Message
+	logger     kitlog.Logger
 }
 
 func NewDispatcher(ctx context.Context,
@@ -20,6 +21,7 @@ func NewDispatcher(ctx context.Context,
 		ctx:        ctx,
 		loader:     loader,
 		msgChannel: msgChannel,
+		logger:     kitlog.NewContext(log.Logger).With("m", "dispatcher"),
 	}
 
 	go d.dispatch()
@@ -30,33 +32,26 @@ func (d *Dispatcher) dispatch() {
 	for {
 		select {
 		case m := <-d.msgChannel:
-			log.Println(m)
 			for _, c := range d.loader.Commands {
-				log.Println("body:", m.Body)
 				req, ok := c.Match(m.Body)
 				if ok {
 					resp, err := c.Endpoint()(d.ctx, req)
 					if err != nil {
-						log.Println(err)
+						d.logger.Log("err", err)
 						continue
 					}
 					reply, err := c.Response(resp)
 					if err != nil {
-						log.Println(err)
+						d.logger.Log("err", err)
 						continue
 					}
-					log.Println("reply:", reply)
 					reply.Address = m.Address //TODO:
-
-					log.Println("reply.addr:", reply.Address)
 
 					gw, ok := d.loader.Gateways[m.Address.GatewayID]
 					if !ok {
 						continue
 					}
-					log.Println("reply gw:", m.Address.GatewayID)
 					gw.SendMessage(reply)
-
 				}
 			}
 		}

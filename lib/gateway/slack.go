@@ -2,12 +2,15 @@ package gateway
 
 import (
 	"github.com/botyard/botyard/lib/config"
+	"github.com/botyard/botyard/lib/log"
 	"github.com/botyard/botyard/lib/message"
 
 	"github.com/bobbytables/slacker"
+	kitlog "github.com/go-kit/kit/log"
+)
 
-	"fmt"
-	"log"
+const (
+	SlackEventTypeMessage = "message"
 )
 
 type SlackGateway struct {
@@ -15,6 +18,7 @@ type SlackGateway struct {
 	cfg    config.SlackGateway
 	client *slacker.APIClient
 	broker *slacker.RTMBroker
+	logger kitlog.Logger
 }
 
 func NewSlackGateway(cfg config.SlackGateway) *SlackGateway {
@@ -23,6 +27,7 @@ func NewSlackGateway(cfg config.SlackGateway) *SlackGateway {
 		id:     "slack",
 		cfg:    cfg,
 		client: client,
+		logger: kitlog.NewContext(log.Logger).With("m", "Gateway-Slack"),
 	}
 	return gw
 }
@@ -46,15 +51,14 @@ func (gw *SlackGateway) Open(c chan *message.Message) error {
 	go func() {
 		for {
 			event := <-gw.broker.Events()
-			fmt.Println(event.Type)
 
-			if event.Type == "message" {
+			if event.Type == SlackEventTypeMessage {
 				msg, err := event.Message()
 				if err != nil {
+					gw.logger.Log("err", err, "event", event)
 					panic(err)
 				}
 
-				fmt.Println(msg.Text)
 				m := message.FromGateway(
 					gw.id,
 					msg.Channel,
@@ -79,9 +83,7 @@ func (gw *SlackGateway) SendMessage(m *message.Message) error {
 	rtmMsg.User = "boty"
 	//rtmMsg.Ts =
 
-	log.Println("rtmMsg:", rtmMsg)
 	err := gw.broker.Publish(rtmMsg)
-	log.Println("SendMessage:", err)
 	return err
 
 }

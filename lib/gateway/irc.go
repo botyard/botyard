@@ -2,12 +2,13 @@ package gateway
 
 import (
 	"crypto/tls"
-	"log"
 
 	"github.com/botyard/botyard/lib/config"
+	"github.com/botyard/botyard/lib/log"
 	"github.com/botyard/botyard/lib/message"
 
 	irc "github.com/fluffle/goirc/client"
+	kitlog "github.com/go-kit/kit/log"
 	"github.com/satori/go.uuid"
 )
 
@@ -21,6 +22,7 @@ type IRCGateway struct {
 	msgChannel chan *message.Message
 	channels   []string //#botyard...
 	ircConn    *irc.Conn
+	logger     kitlog.Logger
 }
 
 func NewIRCGateway(cfg config.IRCGateway, botname string) *IRCGateway {
@@ -42,6 +44,7 @@ func NewIRCGateway(cfg config.IRCGateway, botname string) *IRCGateway {
 		id:      uuid.NewV4().String(),
 		cfg:     cfg,
 		ircConn: c,
+		logger:  kitlog.NewContext(log.Logger).With("m", "Gateway-IRC"),
 	}
 	return gw
 }
@@ -50,7 +53,7 @@ func (gw *IRCGateway) Open(c chan *message.Message) error {
 	gw.msgChannel = c
 
 	if err := gw.ircConn.Connect(); err != nil {
-		log.Printf("Connection error: %s\n", err.Error())
+		gw.logger.Log("err", err, "conn", false)
 		return err
 	}
 
@@ -58,7 +61,7 @@ func (gw *IRCGateway) Open(c chan *message.Message) error {
 		func(conn *irc.Conn, line *irc.Line) {
 			for _, c := range gw.cfg.Channels {
 				conn.Join(c)
-				log.Printf("Joining %v\n", c)
+				gw.logger.Log("join", true, "channel", c)
 			}
 		})
 
@@ -74,7 +77,7 @@ func (gw *IRCGateway) Open(c chan *message.Message) error {
 			c <- m
 		})
 
-	log.Println("Open IRC.")
+	gw.logger.Log("connecting", "irc")
 
 	return nil
 }

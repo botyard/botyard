@@ -11,6 +11,7 @@ type Command struct {
 	Name       string `yaml:"name"`
 	Type       string `yaml:"type"`
 	Command    string `yaml:"command"`
+	Words      string `yaml:"words"`
 	HttpURL    string `yaml:"url,omitempty"`
 	HttpMethod string `yaml:"method,omitempty"`
 	Desc       string `yaml:"desc,omitempty"`

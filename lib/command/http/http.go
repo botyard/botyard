@@ -4,15 +4,16 @@ import (
 	"github.com/botyard/botyard/lib/command"
 	"github.com/botyard/botyard/lib/command/matcher"
 	"github.com/botyard/botyard/lib/command/parse"
+	"github.com/botyard/botyard/lib/log"
 	"github.com/botyard/botyard/lib/message"
 
 	"github.com/go-kit/kit/endpoint"
+	kitlog "github.com/go-kit/kit/log"
 	"golang.org/x/net/context"
 	"golang.org/x/net/context/ctxhttp"
 
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -24,6 +25,7 @@ type HttpCommand struct {
 	Cmd    string `json:"cmd"`
 	items  []*parse.Item
 	client *http.Client
+	logger kitlog.Logger
 }
 
 func New(method, url, cmd string) (*HttpCommand, error) {
@@ -32,6 +34,7 @@ func New(method, url, cmd string) (*HttpCommand, error) {
 		Url:    url,
 		Cmd:    cmd,
 		client: http.DefaultClient,
+		logger: kitlog.NewContext(log.Logger).With("m", "HttpCommand"),
 	}
 
 	items, err := parse.Parse(c.Cmd)
@@ -124,7 +127,7 @@ func (c *HttpCommand) Response(res interface{}) (*message.Message, error) {
 
 	msg := &message.Message{}
 	msg.Body = string(body) //TODO
-	log.Println(msg.Body)
+	//c.logger.log("msg",msg.Body)
 
 	return msg, nil
 }

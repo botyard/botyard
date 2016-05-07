@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/botyard/botyard/lib"
+	"github.com/botyard/botyard/lib/log"
 	"github.com/botyard/botyard/lib/message"
 	"github.com/botyard/botyard/lib/sync"
 
@@ -10,7 +11,6 @@ import (
 
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 )
@@ -37,17 +37,18 @@ func main() {
 }
 
 func DaemonAction(c *cli.Context) {
-	log.Println("Start.")
+	logger := log.Logger
+	logger.Log("start", 1)
 
 	yamlCfgFilePath := c.String("config")
 	if yamlCfgFilePath == "" {
-		log.Fatal("The config file not found")
+		logger.Log("err", "config file not found")
 		return
 	}
 
 	yamlContent, err := ioutil.ReadFile(yamlCfgFilePath)
 	if err != nil {
-		log.Fatalf("Read config file. err:%v", err)
+		logger.Log("err", err, "config", "file")
 		return
 	}
 
@@ -61,12 +62,12 @@ func DaemonAction(c *cli.Context) {
 
 	loader, err := lib.NewLoader(yamlContent)
 	if err != nil {
-		log.Fatalf("Loader err:%v", err)
+		logger.Log("err", err, "loader", 0)
 		return
 	}
 
 	if err := loader.OpenGateways(msgChannel); err != nil {
-		log.Fatalf("Open gateway err:%v", err)
+		logger.Log("err", err, "gateway", 0)
 		return
 	}
 
@@ -85,5 +86,5 @@ func DaemonAction(c *cli.Context) {
 	}()
 	sync.WaitGroup.Wait()
 
-	log.Println("End.")
+	logger.Log("end", 1)
 }

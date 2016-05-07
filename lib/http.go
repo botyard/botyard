@@ -8,6 +8,6 @@ import (
 
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
 	world := r.FormValue("world")
-	log.Println("world:", world)
+	log.Println("/hello endpoint world:", world)
 	fmt.Fprintf(w, "Hi there, I love %s!", world)
 }
