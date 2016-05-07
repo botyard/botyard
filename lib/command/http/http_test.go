@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/botyard/botyard/command"
+	"github.com/botyard/botyard/lib/command"
 )
 
 func Test_HTTPGet(t *testing.T) {
