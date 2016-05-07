@@ -2,6 +2,7 @@
 
 [![Circle CI](https://circleci.com/gh/botyard/botyard.svg?style=svg)](https://circleci.com/gh/botyard/botyard)
 [![Go Report](https://goreportcard.com/badge/github.com/botyard/botyard)](https://goreportcard.com/report/github.com/botyard/botyard)
+[![Docker](https://img.shields.io/docker/pulls/botyard/botyard.svg)](https://hub.docker.com/r/botyard/botyard/)
 
 ## Configuration
 
