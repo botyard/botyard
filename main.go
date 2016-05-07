@@ -8,6 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 	"golang.org/x/net/context"
 
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -18,7 +19,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "botyard"
 	app.Usage = "botyard - make bots,together!"
-	app.Version = "0.0.0"
+	app.Version = fmt.Sprintf("%s commit %s build %s", version, gitCommit, buildTime)
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "config,c",

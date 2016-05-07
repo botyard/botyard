@@ -1,0 +1,7 @@
+package main
+
+var (
+	version   = "0.0.0"
+	gitCommit = "HEAD"
+	buildTime = "-"
+)
