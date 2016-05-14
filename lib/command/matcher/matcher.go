@@ -20,12 +20,17 @@ type Matcher struct {
 	matchIdx  int
 	stateFn   MatchFn
 	arguments []*command.Argument
+	config    *Config
 }
 
-func New(input string, items []*parse.Item) *Matcher {
+func New(input string, items []*parse.Item, config *Config) *Matcher {
+	if config == nil {
+		config = &Config{}
+	}
 	m := &Matcher{
-		input: input,
-		items: items,
+		input:  input,
+		items:  items,
+		config: config,
 	}
 	m.match()
 	return m
@@ -33,6 +38,11 @@ func New(input string, items []*parse.Item) *Matcher {
 
 func (m *Matcher) Match() (bool, int) {
 	if m.matchIdx == len(m.items) {
+		if m.config.FitBackward == true {
+			if m.pos+1 < len(m.input) { //TODO: need whitespace handling
+				return false, m.matchIdx
+			}
+		}
 		return true, m.matchIdx
 	}
 

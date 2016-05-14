@@ -28,7 +28,7 @@ type IRCGateway struct {
 func NewIRCGateway(cfg config.IRCGateway, botname string) *IRCGateway {
 
 	//irc
-	irccfg := irc.NewConfig(botname)
+	irccfg := irc.NewConfig(botname, botname, "Powered by botyard")
 	if cfg.UseSSL == true {
 		irccfg.SSL = true
 		irccfg.SSLConfig = &tls.Config{

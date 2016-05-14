@@ -62,7 +62,18 @@ func (l *Loader) loadCommands() error {
 				return fmt.Errorf("The command config hasn't name")
 			}
 
-			cmd, err := httpcmd.New(cmdcfg.HttpMethod, cmdcfg.HttpURL, cmdcfg.Command)
+			var cmdStr string
+			matchWords := false
+			if cmdcfg.Command != "" {
+				cmdStr = fmt.Sprintf("%s %s", l.Config.Botname, cmdcfg.Command)
+			} else if cmdcfg.Words != "" {
+				cmdStr = cmdcfg.Words
+				matchWords = true
+			} else {
+				return fmt.Errorf("The command needs to have one of command or words")
+			}
+
+			cmd, err := httpcmd.New(cmdcfg.HttpMethod, cmdcfg.HttpURL, cmdStr, matchWords)
 			if err != nil {
 				return err
 			}

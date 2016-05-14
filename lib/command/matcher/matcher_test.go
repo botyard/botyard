@@ -14,7 +14,7 @@ func Test_Matcher(t *testing.T) {
 		matched bool
 		args    []*command.Argument
 	}{
-		{src: "image me", cmd: "image me", matched: true, args: []*command.Argument{}},
+		{src: "image me ", cmd: "image me", matched: true, args: []*command.Argument{}},
 		{src: "imge me", cmd: "image me", matched: false, args: []*command.Argument{}},
 		{src: "image ", cmd: "image me", matched: false, args: []*command.Argument{}},
 		{src: "image", cmd: "image me", matched: false, args: []*command.Argument{}},
@@ -40,7 +40,7 @@ func Test_Matcher(t *testing.T) {
 		}
 		//t.Log(items[0], items[1])
 
-		m := New(tt.src, items)
+		m := New(tt.src, items, nil)
 		ok, _ := m.Match()
 		args := m.Arguments()
 

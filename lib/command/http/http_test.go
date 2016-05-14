@@ -19,7 +19,7 @@ func Test_HTTPGet(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	c, err := New("GET", ts.URL+"?u=<user>", "hello <user>")
+	c, err := New("GET", ts.URL+"?u=<user>", "hello <user>", false)
 	if err != nil {
 		t.Errorf("err: %v", err)
 	}

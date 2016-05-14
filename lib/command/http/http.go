@@ -20,21 +20,23 @@ import (
 )
 
 type HttpCommand struct {
-	Method string `json:"method"`
-	Url    string `json:"url"`
-	Cmd    string `json:"cmd"`
-	items  []*parse.Item
-	client *http.Client
-	logger kitlog.Logger
+	Method     string `json:"method"`
+	Url        string `json:"url"`
+	Cmd        string `json:"cmd"`
+	matchWords bool
+	items      []*parse.Item
+	client     *http.Client
+	logger     kitlog.Logger
 }
 
-func New(method, url, cmd string) (*HttpCommand, error) {
+func New(method, url, cmd string, matchWords bool) (*HttpCommand, error) {
 	c := &HttpCommand{
-		Method: method,
-		Url:    url,
-		Cmd:    cmd,
-		client: http.DefaultClient,
-		logger: kitlog.NewContext(log.Logger).With("m", "HttpCommand"),
+		Method:     method,
+		Url:        url,
+		Cmd:        cmd,
+		matchWords: matchWords,
+		client:     http.DefaultClient,
+		logger:     kitlog.NewContext(log.Logger).With("m", "HttpCommand"),
 	}
 
 	items, err := parse.Parse(c.Cmd)
@@ -46,7 +48,12 @@ func New(method, url, cmd string) (*HttpCommand, error) {
 }
 
 func (c *HttpCommand) Match(in string) (req interface{}, ok bool) {
-	m := matcher.New(in, c.items)
+	cfg := &matcher.Config{}
+	if c.matchWords == false {
+		cfg.FitForward = true
+		cfg.FitBackward = true
+	}
+	m := matcher.New(in, c.items, cfg)
 	ok, _ = m.Match()
 	req = m.Arguments()
 	return

@@ -26,6 +26,9 @@ func MatchText(m *Matcher) MatchFn {
 				break
 			}
 			return MatchText
+		} else if m.config.FitForward == true && m.pos == 0 {
+			//No fit forward..
+			return nil
 		}
 		if m.next() == eof {
 			break
@@ -60,5 +63,6 @@ func MatchArgument(m *Matcher) MatchFn {
 			break
 		}
 	}
+
 	return nil
 }
