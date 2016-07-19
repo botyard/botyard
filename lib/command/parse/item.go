@@ -12,11 +12,14 @@ const (
 	ItemEOF
 	ItemText
 	ItemArgument
+	ItemArgumentString
 )
 
 const (
-	leftArgument  = "<"
-	rightArgument = ">"
+	leftArgument        = "<"
+	rightArgument       = ">"
+	leftArgumentString  = "\""
+	rightArgumentString = "\""
 )
 
 const eof = -1

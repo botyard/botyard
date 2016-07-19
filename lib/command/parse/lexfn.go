@@ -12,6 +12,13 @@ func lexText(l *lexer) stateFn {
 				l.emit(ItemText)
 			}
 			return lexArgument
+
+		} else if strings.HasPrefix(l.input[l.pos:], leftArgumentString) {
+			if l.pos > l.start {
+				l.emit(ItemText)
+			}
+			return lexArgumentString
+
 		} else if l.isWhitespace() {
 			if l.pos > l.start {
 				l.emit(ItemText)
@@ -47,6 +54,33 @@ func lexArgument(l *lexer) stateFn {
 			}
 		} else if strings.HasPrefix(l.input[l.pos:], leftArgument) {
 			l.ignore() //ignore leftArgument
+		}
+
+		if l.next() == eof {
+			break
+		}
+	}
+
+	return nil
+}
+
+func lexArgumentString(l *lexer) stateFn {
+	var hasLeft = false
+
+	for {
+		if hasLeft == false && strings.HasPrefix(l.input[l.pos:], leftArgumentString) {
+			l.ignore()
+			hasLeft = true
+		} else if hasLeft == true && strings.HasPrefix(l.input[l.pos:], rightArgumentString) {
+			if l.pos > l.start {
+				l.emit(ItemArgumentString)
+				l.ignore() // ignore rightArgumentString
+				return lexText
+			} else {
+				l.errorf("unclosed argument string")
+				break
+			}
+
 		}
 
 		if l.next() == eof {

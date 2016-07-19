@@ -32,6 +32,7 @@ func Test_LexerCommand(t *testing.T) {
 		items []Item
 	}{
 		{s: "send <message>", items: []Item{{ItemText, "send"}, {ItemArgument, "message"}}},
+		{s: "send \"message\"", items: []Item{{ItemText, "send"}, {ItemArgumentString, "message"}}},
 		{s: "send message", items: []Item{{ItemText, "send"}, {ItemText, "message"}}},
 	}
 
