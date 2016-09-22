@@ -31,6 +31,9 @@ func Test_Matcher(t *testing.T) {
 		{"send hello world ", "send <message1> <message2>", true,
 			[]*command.Argument{{"message1", "hello"}, {"message2", "world"}},
 		},
+		{"send \"hello world\" ", "send <message1>", true,
+			[]*command.Argument{{"message1", "hello world"}},
+		},
 	}
 
 	for i, tt := range tests {

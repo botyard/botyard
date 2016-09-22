@@ -99,3 +99,11 @@ func (m *Matcher) isWhitespace() bool {
 	ch, _ := utf8.DecodeRuneInString(m.input[m.pos:])
 	return unicode.IsSpace(ch)
 }
+
+func (m *Matcher) isQuote() bool {
+	ch, _ := utf8.DecodeRuneInString(m.input[m.pos:])
+	if ch == '"' {
+		return true
+	}
+	return false
+}
