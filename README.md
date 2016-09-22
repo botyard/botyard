@@ -1,6 +1,6 @@
 # Botyard 
 
-[![Circle CI](https://circleci.com/gh/botyard/botyard.svg?style=svg)](https://circleci.com/gh/botyard/botyard) [![Go Report](https://goreportcard.com/badge/github.com/botyard/botyard)](https://goreportcard.com/report/github.com/botyard/botyard) [![codebeat badge](https://codebeat.co/badges/6a35eba5-e617-4d80-8fd4-2920dffcd1f1)](https://codebeat.co/projects/github-com-botyard-botyard) [![Docker](https://img.shields.io/docker/pulls/botyard/botyard.svg)](https://hub.docker.com/r/botyard/botyard/)
+[![Circle CI](https://circleci.com/gh/botyard/botyard.svg?style=svg)](https://circleci.com/gh/botyard/botyard) [![Go Report](https://goreportcard.com/badge/github.com/botyard/botyard)](https://goreportcard.com/report/github.com/botyard/botyard) [![Docker](https://img.shields.io/docker/pulls/botyard/botyard.svg)](https://hub.docker.com/r/botyard/botyard/)
 
 ## Configuration
 
