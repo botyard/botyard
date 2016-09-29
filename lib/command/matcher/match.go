@@ -40,11 +40,11 @@ func MatchText(m *Matcher) MatchFn {
 func MatchArgument(m *Matcher) MatchFn {
 	item := m.items[m.itemIdx]
 	inQuote := false
-	for {
-		if item.Type != parse.ItemArgument {
-			return MatchText
-		}
+	if item.Type != parse.ItemArgument {
+		return MatchText
+	}
 
+	for {
 		if m.isWhitespace() && !inQuote { // TODO:
 			if m.pos > m.start {
 				m.emit(item)
@@ -52,14 +52,18 @@ func MatchArgument(m *Matcher) MatchFn {
 					break
 				}
 				return MatchArgument
-			} else {
-				m.ignore()
 			}
+			m.ignore()
 		} else if m.isQuote() {
 			if !inQuote {
 				inQuote = true
+				m.ignore()
 			} else {
 				inQuote = false
+				if m.pos > m.start {
+					m.emit(item)
+				}
+				break
 			}
 		}
 

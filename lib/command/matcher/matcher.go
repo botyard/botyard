@@ -80,7 +80,6 @@ func (m *Matcher) nextItem() bool {
 
 func (m *Matcher) ignore() {
 	m.start = m.pos + 1
-	m.pos = m.pos + 1
 }
 
 func (m *Matcher) seek(pos int) {
