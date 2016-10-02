@@ -2,6 +2,7 @@ package lib
 
 import (
 	"github.com/botyard/botyard/lib/command"
+	builtincmd "github.com/botyard/botyard/lib/command/builtin"
 	httpcmd "github.com/botyard/botyard/lib/command/http"
 	"github.com/botyard/botyard/lib/config"
 	"github.com/botyard/botyard/lib/gateway"
@@ -79,7 +80,24 @@ func (l *Loader) loadCommands() error {
 			}
 
 			l.Commands[cmdcfg.Name] = cmd
+		case command.BUILTIN:
+			cmdFuncC, ok := builtincmd.CmdFuncs[cmdcfg.Name]
+			if !ok {
+				return fmt.Errorf("The command %s can't found", cmdcfg.Name)
+			}
+			cmdstr, matchWords, err := l.commandLine(cmdcfg)
+			if err != nil {
+				return err
+			}
+
+			cmd, err := builtincmd.New(cmdstr, cmdFuncC(&l.Config), matchWords)
+			if err != nil {
+				return err
+			}
+
+			l.Commands[cmdcfg.Name] = cmd
 		}
+		l.logger.Log("command", cmdcfg.Name, "type", cmdcfg.Type, "loaded", true)
 	}
 
 	return nil
@@ -120,4 +138,17 @@ func (l *Loader) OpenGateways(msgCh chan *message.Message) error {
 		}
 	}
 	return nil
+}
+
+func (l *Loader) commandLine(cfg config.Command) (cmd string, matchWords bool, err error) {
+	if cfg.Command != "" {
+		cmd = fmt.Sprintf("%s %s", l.Config.Botname, cfg.Command)
+	} else if cfg.Words != "" {
+		cmd = cfg.Words
+		matchWords = true
+	} else {
+		err = fmt.Errorf("The command needs to have one of command or words")
+	}
+
+	return
 }

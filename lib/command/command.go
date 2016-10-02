@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	HTTP = "http"
+	HTTP    = "http"
+	BUILTIN = "builtin"
 )
 
 type Command interface {

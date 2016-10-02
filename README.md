@@ -7,6 +7,12 @@
 ```
 name: boty
 commands:
+    - name: help
+      command: help
+      type: builtin
+      func: help 
+      desc: help command
+ 
     - name: "hello"
       command: "hello <world>"
       url: "http://example.com/hello?world=<world>"

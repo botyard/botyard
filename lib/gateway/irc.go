@@ -2,6 +2,7 @@ package gateway
 
 import (
 	"crypto/tls"
+	"strings"
 
 	"github.com/botyard/botyard/lib/config"
 	"github.com/botyard/botyard/lib/log"
@@ -83,7 +84,10 @@ func (gw *IRCGateway) Open(c chan *message.Message) error {
 }
 
 func (gw *IRCGateway) SendMessage(m *message.Message) error {
-	gw.ircConn.Privmsg(m.Address.Channel, m.Body)
+	msgs := strings.Split(m.Body, "\n")
+	for _, msg := range msgs {
+		gw.ircConn.Privmsg(m.Address.Channel, msg)
+	}
 	return nil //TODO:
 }
 

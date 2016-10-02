@@ -8,13 +8,18 @@ type Config struct {
 }
 
 type Command struct {
-	Name       string `yaml:"name"`
-	Type       string `yaml:"type"`
-	Command    string `yaml:"command"`
-	Words      string `yaml:"words"`
+	Name    string `yaml:"name"`
+	Type    string `yaml:"type"`
+	Command string `yaml:"command"`
+	Words   string `yaml:"words"`
+	Desc    string `yaml:"desc,omitempty"`
+
+	//HTTPCommand
 	HttpURL    string `yaml:"url,omitempty"`
 	HttpMethod string `yaml:"method,omitempty"`
-	Desc       string `yaml:"desc,omitempty"`
+
+	//BuiltinCommand
+	Func string `yaml:"func,omitempty"`
 }
 
 type IRCGateway struct {
